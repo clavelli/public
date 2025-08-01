@@ -50,10 +50,10 @@ class XMeta(type):
     # __init__, but something about the implementation of operators makes it so it only
     # counts if the method is actually defined on the class, and this is the only way
     # to do that without typing everything a bunch of times.
-    def __new__(mcs, name, bases, namespace, **kwargs):
+    def __new__(cls, name, bases, dct):
         for x in operator_dunder_fns:
-            namespace[f"__{x}__"] = build_capture_fn(f"__{x}__")
-        return super().__new__(mcs, name, bases, namespace)
+            dct[f"__{x}__"] = build_capture_fn(f"__{x}__")
+        return super().__new__(cls, name, bases, dct)
 
 
 class XCls(metaclass=XMeta):
